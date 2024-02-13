@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {addHouse} from "../utils/ApiFunctions.js";
-import {preview} from "vite";
+import HouseTypeSelector from "../common/HouseTypeSelector.jsx";
 
 const AddHouse = () => {
     const [newHouse, setNewHouse] = useState({
@@ -16,14 +16,14 @@ const AddHouse = () => {
     const [erroMessage, setErrorMessage] = useState("")
 
 
-    const handleRoomInputChange = (e) => {
+    const handleHouseInputChange = (e) => {
         const name = e.target.name
         let value = e.target.value
         if (name === "housePrice") {
             if (!isNaN(value)) {
-                value.parseInt(value)
+                value.parseInt(value);
             } else {
-                value = ""
+                value = "";
             }
         }
         setNewHouse({...newHouse, [name]: value})
@@ -51,6 +51,8 @@ const AddHouse = () => {
         } catch (error) {
             setErrorMessage(error.message)
         }
+        
+
     }
 
 
@@ -65,6 +67,10 @@ const AddHouse = () => {
                                 <label htmlFor="houseType" className="form-label"> House Type
                                 </label>
                                 <div>
+                                    <HouseTypeSelector
+                                        handleHouseInputChange={handleHouseInputChange}
+                                        newHouse={newHouse}
+                                    />
 
                                 </div>
 
@@ -78,7 +84,7 @@ const AddHouse = () => {
                                        name="housePrice"
                                        type="number"
                                        value={newHouse.housePrice}
-                                       onChange={handleRoomInputChange}/>
+                                       onChange={handleHouseInputChange}/>
 
 
                             </div>

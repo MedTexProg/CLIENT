@@ -30,9 +30,9 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
             {houseTypes.length > 0 && (
                 <div>
                     <select
-                        id='houseType'
+                        required
                         name='houseType'
-                        value={newHouse.houseType}
+
                         onChange={(e) => {
                             if (e.target.value === "Add New") {
                                 setShowNewHouseTypeInput(true)
@@ -40,6 +40,7 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
                                 handleHouseInputChange(e)
                             }
                         }}
+                        value={newHouse.houseType}
                     >
                         <option value={""}> select a house type</option>
                         <option value={"Add New"}> Add New</option>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import {addHouse} from "../utils/ApiFunctions.js";
 import HouseTypeSelector from "../common/HouseTypeSelector.jsx";
 
@@ -9,51 +9,54 @@ const AddHouse = () => {
         housePrice: "",
         numOfRoom: "",
         numOfBathroom: ""
-    })
+    });
 
-    const [imagePreview, setImagePreview] = useState("")
-    const [successMessage, setSuccessMessage] = useState("")
-    const [erroMessage, setErrorMessage] = useState("")
-
+    const [imagePreview, setImagePreview] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleHouseInputChange = (e) => {
-        const name = e.target.name
-        let value = e.target.value
+        const name = e.target.name;
+        let value = e.target.value;
         if (name === "housePrice") {
             if (!isNaN(value)) {
-                value.parseInt(value);
+                value = parseInt(value);
             } else {
                 value = "";
             }
         }
-        setNewHouse({...newHouse, [name]: value})
-    }
+        setNewHouse({...newHouse, [name]: value});
+    };
 
     const handleImageChange = (e) => {
-        const selectedImage = e.target.files[0]
-        setNewHouse({...newHouse, photo: selectedImage})
-        setImagePreview(URL.createObjectURL(selectedImage))
-    }
+        const selectedImage = e.target.files[0];
+        setNewHouse({...newHouse, photo: selectedImage});
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(selectedImage);
+    };
+
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            const success = await addHouse(newHouse.photo, newHouse.houseType, newHouse.housePrice, newHouse.numOfRoom, newHouse.numOfBathroom)
+            const success = await addHouse(newHouse.photo, newHouse.houseType, newHouse.housePrice, newHouse.numOfRoom, newHouse.numOfBathroom);
 
             if (success !== undefined) {
-                setSuccessMessage("a new house was added to the database")
-                setNewHouse({photo: null, houseType: "", housePrice: "", numOfBathroom: "", numOfRoom: ""})
-                setImagePreview("")
-                setErrorMessage("")
+                setSuccessMessage("A new house was added to the database");
+                setNewHouse({photo: null, houseType: "", housePrice: "", numOfBathroom: "", numOfRoom: ""});
+                setImagePreview("");
+                setErrorMessage("");
             } else {
-                setErrorMessage("Error adding house")
+                setErrorMessage("Error adding house");
             }
         } catch (error) {
-            setErrorMessage(error.message)
+            setErrorMessage(error.message);
         }
-        
-
-    }
+    };
 
 
     return (
@@ -85,27 +88,49 @@ const AddHouse = () => {
                                        type="number"
                                        value={newHouse.housePrice}
                                        onChange={handleHouseInputChange}/>
-
-
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="photo" className="form-label"> House Photo
-                                </label>
+                                <label htmlFor="numOfRoom" className="form-label">Number of Rooms</label>
+                                <input
+                                    type="number"
+                                    name="numOfRoom"
+                                    value={newHouse.numOfRoom}
+                                    onChange={handleHouseInputChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="numOfBathroom" className="form-label">Number of Bathrooms</label>
+                                <input
+                                    type="number"
+                                    name="numOfBathroom"
+                                    value={newHouse.numOfBathroom}
+                                    onChange={handleHouseInputChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="photo" className="form-label"> House Photo </label>
                                 <input
                                     id="photo"
                                     name="photo"
                                     type="file"
                                     className="form-control"
-                                    value={newHouse.photo}
-                                    onChange={handleImageChange}/>
+                                    onChange={handleImageChange}
+                                />
+
+                                {newHouse.photo && (
+                                    <p>Selected Photo: {newHouse.photo.name}</p>
+                                )}
 
                                 {imagePreview && (
                                     <img src={imagePreview}
-                                         alt="preview House Photo"
+                                         alt="Preview House Photo"
                                          style={{maxWidth: "400px", maxHeight: "400px"}}
                                          className="mb-3"
                                     />
                                 )}
+
 
                             </div>
                             <div className="d-grid d-flex mt-2">

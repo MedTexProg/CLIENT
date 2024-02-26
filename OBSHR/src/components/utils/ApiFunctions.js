@@ -27,12 +27,13 @@ export async function addHouse(photo, houseType, housePrice, numOfRoom, numOfBat
 }
 
 /* This function gets all house types from the database */
-export async function getHouseType() {
+export async function getHouseTypes() {
     try {
-        const response = await api.get("/houses/house-types");
+        const response = await api.get("/house/types");
         return response.data;
     } catch (error) {
         console.error("Error fetching house types:", error);
         throw new Error("An unexpected error occurred while fetching house types.");
     }
 }
+

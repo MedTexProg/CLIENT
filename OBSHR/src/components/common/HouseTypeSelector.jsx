@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getHouseType} from "../utils/ApiFunctions.js";
+import {getHouseTypes} from "../utils/ApiFunctions.js";
 
 const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
 
@@ -8,13 +8,13 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
     const [newHouseType, setNewHouseType] = useState("")
 
     useEffect(() => {
-        getHouseType().then((data) => {
+        getHouseTypes().then((data) => {
             setHouseTypes(data)
         })
     }, [])
 
     const handleNewHouseTypeInputChange = (e) => {
-        setHouseTypes(e.target.value);
+        setNewHouseType(e.target.value);
     }
 
     const handleAddNewHouseType = () => {
@@ -30,9 +30,7 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
             {houseTypes.length > 0 && (
                 <div>
                     <select
-                        required
                         name='houseType'
-
                         onChange={(e) => {
                             if (e.target.value === "Add New") {
                                 setShowNewHouseTypeInput(true)
@@ -42,7 +40,7 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
                         }}
                         value={newHouse.houseType}
                     >
-                        <option value={""}> select a house type</option>
+                        <option value=""> select a house type</option>
                         <option value={"Add New"}> Add New</option>
                         {
                             houseTypes.map((type, index) => (
@@ -53,15 +51,18 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
 
                     </select>
                     {showNewHouseTypeInput && (
-                        <div className='input-group'>
-                            <input
-                                className='form-control'
-                                type='text'
-                                placeholder='Enter a new house type'
-                                onChange={handleNewHouseTypeInputChange}
-                            />
-                            <button className='btn btn-hotel' type='button' onClick={handleAddNewHouseType}> Add
-                            </button>
+                        <div className="mt-2">
+                            <div className='input-group'>
+                                <input
+                                    className='form-control'
+                                    type='text'
+                                    placeholder='Enter a new house type'
+                                    value={newHouseType}
+                                    onChange={handleNewHouseTypeInputChange}
+                                />
+                                <button className='btn btn-hotel' type='button' onClick={handleAddNewHouseType}> Add
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

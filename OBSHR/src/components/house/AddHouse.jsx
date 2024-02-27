@@ -31,14 +31,8 @@ const AddHouse = () => {
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
         setNewHouse({...newHouse, photo: selectedImage});
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            setImagePreview(reader.result);
-        };
-        reader.readAsDataURL(selectedImage);
+        setImagePreview(URL.createObjectURL(selectedImage))
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -58,7 +52,6 @@ const AddHouse = () => {
         }
     };
 
-
     return (
         <>
             <section className="container, mt-5 mb-5">
@@ -74,9 +67,7 @@ const AddHouse = () => {
                                         handleHouseInputChange={handleHouseInputChange}
                                         newHouse={newHouse}
                                     />
-
                                 </div>
-
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="housePrice" className="form-label"> House Price
@@ -118,11 +109,9 @@ const AddHouse = () => {
                                     className="form-control"
                                     onChange={handleImageChange}
                                 />
-
                                 {newHouse.photo && (
                                     <p>Selected Photo: {newHouse.photo.name}</p>
                                 )}
-
                                 {imagePreview && (
                                     <img src={imagePreview}
                                          alt="Preview House Photo"
@@ -130,22 +119,18 @@ const AddHouse = () => {
                                          className="mb-3"
                                     />
                                 )}
-
-
                             </div>
                             <div className="d-grid d-flex mt-2">
-                                <button className="btn btn-outline-primary ml-5">
+                                <button className="btn btn-outline-primary ml-5" type="submit">
                                     save House
                                 </button>
                             </div>
-
                         </form>
                     </div>
                 </div>
             </section>
-
         </>
     )
 }
 
-export default AddHouse
+export default AddHouse;

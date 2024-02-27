@@ -57,7 +57,7 @@ const HouseTypeSelector = ({handleHouseInputChange, newHouse}) => {
                                     className='form-control'
                                     type='text'
                                     placeholder='Enter a new house type'
-                                    value={newHouseType}
+                                    // value={newHouseType}
                                     onChange={handleNewHouseTypeInputChange}
                                 />
                                 <button className='btn btn-hotel' type='button' onClick={handleAddNewHouseType}> Add

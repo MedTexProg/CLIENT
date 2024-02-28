@@ -1,4 +1,5 @@
 import axios from "axios";
+import error from "eslint-plugin-react/lib/util/error.js";
 
 export const api = axios.create({
     baseURL: "http://localhost:1906" // Update the base URL if needed
@@ -37,3 +38,48 @@ export async function getHouseTypes() {
     }
 }
 
+/* this function gets all houses from the database */
+export async function getAllHouses() {
+    try {
+        const result = await api.get("/houses/all-rooms")
+        return result.data
+
+    } catch (error) {
+        throw new Error("Error fetching houses")
+    }
+}
+
+/* this function delete house by id from the database */
+export async function deleteHouse(houseId) {
+    try {
+        const result = await api.delete(`/houses/delete/house/${houseId}`)
+        return result.data
+
+    } catch (error) {
+        throw new Error(`Error deleting house ${error.message}`)
+    }
+}
+
+/* this function update house in the database */
+export async function updateHouse(houseId, houseData) {
+    const formData = new FormData()
+    formData.append("photo", houseData.photo);
+    formData.append("houseType", houseData.houseType);
+    formData.append("housePrice", houseData.housePrice);
+    formData.append("numOfRoom", houseData.numOfRoom);
+    formData.append("numOfBathroom", houseData.numOfBathroom);
+
+    const response = await api.put(`/houses/update/${houseId}`)
+    return response
+}
+
+/* this function get house by id in the database */
+export async function getHouseById(houseId) {
+    try {
+        const result = await api.get(`/houses/house/${houseId}`)
+        return result.data
+
+    } catch (e) {
+        throw new Error(`Error fetching room ${error.message}`)
+    }
+}

@@ -69,8 +69,7 @@ export async function updateHouse(houseId, houseData) {
     formData.append("numOfRoom", houseData.numOfRoom);
     formData.append("numOfBathroom", houseData.numOfBathroom);
 
-    const response = await api.put(`/houses/update/${houseId}`)
-    return response
+    return await api.put(`/houses/update/${houseId}`, formData)
 }
 
 /* this function get house by id in the database */

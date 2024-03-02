@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {addHouse} from "../utils/ApiFunctions.js";
 import HouseTypeSelector from "../common/HouseTypeSelector.jsx";
+import {Link} from "react-router-dom";
 
 const AddHouse = () => {
     const [newHouse, setNewHouse] = useState({
@@ -10,40 +11,35 @@ const AddHouse = () => {
         numOfRoom: "",
         numOfBathroom: ""
     });
-
     const [imagePreview, setImagePreview] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleHouseInputChange = (e) => {
-        const name = e.target.name;
-        let value = e.target.value;
-        if (name === "housePrice") {
-            if (!isNaN(value)) {
-                value = parseInt(value);
-            } else {
-                value = "";
-            }
-        }
+        const {name, value} = e.target;
         setNewHouse({...newHouse, [name]: value});
     };
 
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
         setNewHouse({...newHouse, photo: selectedImage});
-        setImagePreview(URL.createObjectURL(selectedImage))
+        setImagePreview(URL.createObjectURL(selectedImage));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const success = await addHouse(newHouse.photo, newHouse.houseType, newHouse.housePrice, newHouse.numOfRoom, newHouse.numOfBathroom);
-
             if (success) {
                 setSuccessMessage("A new house was added to the database");
-                setNewHouse({photo: null, houseType: "", housePrice: "", numOfBathroom: "", numOfRoom: ""});
+                setNewHouse({
+                    photo: null,
+                    houseType: "",
+                    housePrice: "",
+                    numOfBathroom: "",
+                    numOfRoom: ""
+                });
                 setImagePreview("");
-                setErrorMessage("");
             } else {
                 setErrorMessage("Error adding house");
             }
@@ -54,7 +50,6 @@ const AddHouse = () => {
             setSuccessMessage("");
             setErrorMessage("");
         }, 3000);
-
     };
 
     return (
@@ -62,10 +57,8 @@ const AddHouse = () => {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <h2 className="text-center mb-4">Add a New House</h2>
-                    {successMessage && (
-                        <div className="alert alert-success fade show"> {successMessage}</div>
-                    )}
-                    {errorMessage && <div className="alert alert-danger fade show"> {errorMessage}</div>}
+                    {successMessage && <div className="alert alert-success fade show">{successMessage}</div>}
+                    {errorMessage && <div className="alert alert-danger fade show">{errorMessage}</div>}
 
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
@@ -118,18 +111,12 @@ const AddHouse = () => {
                                 className="form-control"
                                 onChange={handleImageChange}
                             />
-                            {newHouse.photo && (
-                                <p className="mt-2">Selected Photo: {newHouse.photo.name}</p>
-                            )}
-                            {imagePreview && (
-                                <img
-                                    src={imagePreview}
-                                    alt="Preview House Photo"
-                                    className="mt-2 img-fluid"
-                                />
-                            )}
+                            {newHouse.photo && <p className="mt-2">Selected Photo: {newHouse.photo.name}</p>}
+                            {imagePreview &&
+                                <img src={imagePreview} alt="Preview House Photo" className="mt-2 img-fluid"/>}
                         </div>
                         <div className="d-grid">
+                            <Link to={"/existing-houses"} className="btn btn-outline-info">Back</Link>
                             <button className="btn btn-primary" type="submit">Save House</button>
                         </div>
                     </form>

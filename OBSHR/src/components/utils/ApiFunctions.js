@@ -82,3 +82,53 @@ export async function getHouseById(houseId) {
         throw new Error(`Error fetching room ${error.message}`)
     }
 }
+
+/* this function save new bookings to database */
+export async function bookHouse(houseId, booking) {
+    try {
+        const response = await api.post(`/bookings/room/${houseId}/booking`, booking)
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data)
+        } else {
+            throw new Error(`error booking house: ${error.message}`)
+        }
+    }
+}
+
+/* this function get All Booking from database */
+export async function getAllBookings() {
+    try {
+        const result = await api.get("/bookings/all-bookings")
+        return result.data
+    } catch (error) {
+        throw new Error(`Error fetching booking : ${error.message}`)
+    }
+}
+
+/* this function get Booking by confirmation code */
+export async function getBookingByConfirmationCode(confirmationCode) {
+    try {
+        const result = await api.get(`/bookings/confirmation/${confirmationCode}`)
+        return result.data
+
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data)
+        } else {
+            throw new Error(`Error find booking: ${error.message}`)
+        }
+    }
+}
+
+/* this function cancel booking from the database */
+export async function cancelBooking(bookingId) {
+    try {
+        const result = await api.delete(`/bookings/booking/${bookingId} /delete`)
+        return result.data
+    } catch (error) {
+        throw new Error(`Error cancelling booking: ${error.message}`)
+
+    }
+}

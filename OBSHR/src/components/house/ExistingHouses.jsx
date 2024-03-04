@@ -5,13 +5,13 @@ import HousePaginator from "../common/HousePaginator.jsx";
 import {Col, Row} from "react-bootstrap";
 import {FaEdit, FaEye, FaTrashAlt} from "react-icons/fa";
 import {Link} from "react-router-dom";
-import {FaPlus} from "react-icons/fa6";
+import {FaPlus} from "react-icons/fa";
 
 const ExistingHouses = () => {
-    const [houses, setHouses] = useState([{id: "", houseType: "", housePrice: "", numOfRoom: "", numOfBathroom: ""}])
-    const [currentPage, setCurrentPage] = useState(1)
-    const [housesPerPage] = useState(8)
-    const [isLoading, setIsLoading] = useState(false)
+    const [houses, setHouses] = useState([{id: "", houseType: "", housePrice: "", numOfRoom: "", numOfBathroom: ""}]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [housesPerPage] = useState(8);
+    const [isLoading, setIsLoading] = useState(false);
     const [filteredHouses, setFilteredHouses] = useState([{
         id: "",
         houseType: "",
@@ -19,70 +19,66 @@ const ExistingHouses = () => {
         numOfRoom: "",
         numOfBathroom: ""
     }])
-    const [selectedHouseType, setSelectedHouseType] = useState("")
-    const [successMessage, setSuccessMessage] = useState("")
-    const [errorMessage, setErrorMessage] = useState("")
+    const [selectedHouseType, setSelectedHouseType] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        fetchHouses()
-
+        fetchHouses();
     }, []);
 
-
     const fetchHouses = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
-            const result = await getAllHouses()
-            setHouses(result)
-            setIsLoading(false)
+            const result = await getAllHouses();
+            setHouses(result);
+            setIsLoading(false);
         } catch (error) {
-            setErrorMessage(error.message)
-            setIsLoading(false)
+            setErrorMessage(error.message);
+            setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         if (selectedHouseType === "") {
-            setFilteredHouses(houses)
+            setFilteredHouses(houses);
         } else {
-            const filteredHouses = houses.filter((house) => house.houseType === selectedHouseType)
-            setFilteredHouses(filteredHouses)
+            const filteredHouses = houses.filter((house) => house.houseType === selectedHouseType);
+            setFilteredHouses(filteredHouses);
         }
-        setCurrentPage(1)
-    }, [houses, selectedHouseType])
+        setCurrentPage(1);
+    }, [houses, selectedHouseType]);
 
     const handlePaginationClick = (pageNumber) => {
-        setCurrentPage(pageNumber)
-    }
+        setCurrentPage(pageNumber);
+    };
 
     const handleDelete = async (houseId) => {
         try {
             const result = await deleteHouse(houseId)
             if (result === "") {
-                setSuccessMessage(`House No:${houseId} was deleted`)
-                fetchHouses()
+                setSuccessMessage(`House No:${houseId} was deleted`);
+                fetchHouses();
             } else {
-                console.error(`Error deleting house : ${result.message}`)
+                console.error(`Error deleting house : ${result.message}`);
             }
-
         } catch (error) {
-            setErrorMessage(error.message)
+            setErrorMessage(error.message);
         }
         setTimeout(() => {
-            setSuccessMessage("")
-            setErrorMessage("")
-        }, 3000)
-    }
+            setSuccessMessage("");
+            setErrorMessage("");
+        }, 3000);
+    };
 
-    const calculateTotalPages = (filteredHouses, housesPerPage, houses) => {
+    const calculateTotalPages = () => {
         const totalHouses = filteredHouses.length > 0 ? filteredHouses.length : houses.length
-        return Math.ceil(totalHouses / housesPerPage)
-    }
+        return Math.ceil(totalHouses / housesPerPage);
+    };
 
-    const indexOfLastHouse = currentPage * housesPerPage
-    const indexOfFirstHouse = indexOfLastHouse - housesPerPage
-    const currentHouses = filteredHouses.slice(indexOfFirstHouse, indexOfLastHouse)
-
+    const indexOfLastHouse = currentPage * housesPerPage;
+    const indexOfFirstHouse = indexOfLastHouse - housesPerPage;
+    const currentHouses = filteredHouses.slice(indexOfFirstHouse, indexOfLastHouse);
 
     return (
         <>
@@ -107,7 +103,7 @@ const ExistingHouses = () => {
                             </Link>
                         </Col>
                     </Row>
-                    <table className='table table-bordered table-hover'>
+                    <table className="table table-bordered table-hover">
                         <thead>
                         <tr className="text-center">
                             <th>ID</th>
@@ -128,16 +124,17 @@ const ExistingHouses = () => {
                                 <td>{house.numOfBathroom}</td>
                                 <td className="gap-2">
                                     <Link to={`/edit-house/${house.id}`}>
-                                <span className="btn btn-info btn-sm">
-                                    <FaEye/>
-                                </span>
+                                            <span className="btn btn-info btn-sm">
+                                                <FaEye/>
+                                            </span>
                                         <span className="btn btn-warning btn-sm">
-                                    <FaEdit/>
-                                </span>
+                                                <FaEdit/>
+                                            </span>
                                     </Link>
                                     <button
                                         className="btn btn-danger btn-sm"
-                                        onClick={() => handleDelete(house.id)}>
+                                        onClick={() => handleDelete(house.id)}
+                                    >
                                         <FaTrashAlt/>
                                     </button>
                                 </td>
@@ -147,13 +144,13 @@ const ExistingHouses = () => {
                     </table>
                     <HousePaginator
                         currentPage={currentPage}
-                        totalPages={calculateTotalPages(filteredHouses, housesPerPage, houses)}
+                        totalPages={calculateTotalPages()}
                         onPageChange={handlePaginationClick}
                     />
                 </section>
             )}
         </>
+    );
+};
 
-    )
-}
 export default ExistingHouses;

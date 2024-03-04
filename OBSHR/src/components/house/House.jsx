@@ -10,7 +10,7 @@ const House = () => {
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
-    const [housePerPage] = useState(6)
+    const [housesPerPage] = useState(6)
     const [filteredData, setFilteredData] = useState([{id: ""}])
 
     useEffect(() => {
@@ -35,20 +35,19 @@ const House = () => {
         setCurrentPage(pageNumber)
     }
 
-    const totalPages = Math.ceil(filteredData.length / housePerPage)
+    const totalPages = Math.ceil(filteredData.length / housesPerPage)
     const renderHouses = () => {
-        const startIndex = (currentPage - 1) * housePerPage
-        const endIndex = startIndex + housePerPage
+        const startIndex = (currentPage - 1) * housesPerPage
+        const endIndex = startIndex + housesPerPage
         return filteredData
             .slice(startIndex, endIndex)
-            .map((house) => <HouseCard key={house.id} house={house}/>
-            )
+            .map((house) => <HouseCard key={house.id} house={house}/>)
     }
     return (
         <Container>
             <Row>
                 <Col md={6} className="mb-3 mb-md-0">
-                    <HouseFilter data={data} setFilteredData={setFilteredData()}/>
+                    <HouseFilter data={data} setFilteredData={setFilteredData}/>
                 </Col>
                 <Col md={6} className="d-flex align-items-center justify-content-end">
                     <HousePaginator

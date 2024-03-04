@@ -9,11 +9,16 @@ const HouseCard = ({house}) => {
             <Card>
                 <Card.Body className="d-flex flex-wrap align-items-center">
                     <div className="flex-shrink-0 mr-3 mb-3 mb-md-0">
-                        <Card.Img
-                            variant='top'
-                            src={`data:image/png;base64,${house.photo}`}
-                            alt="house photo"
-                            style={{width: "100%", maxWidth: "200px", height: "auto"}}/>
+                        <Link to={`book-house/${house.id}`} className="btn btn-hotel btn-sm">
+
+                            <Card.Img
+                                variant='top'
+                                src={`data:image/png;base64,${house.photo}`}
+                                alt="house photo"
+                                style={{width: "100%", maxWidth: "200px", height: "auto"}}
+                            />
+
+                        </Link>
                     </div>
                     <div className="flex-grow-1 ml-3 px-5">
                         <Card.Title className="hotel-color">{house.houseType}</Card.Title>
@@ -23,7 +28,7 @@ const HouseCard = ({house}) => {
                         <Card.Text> Some House information goes here for the guest to read through </Card.Text>
                     </div>
                     <div className="flex-shrink-0 mt-3">
-                        <Link to={`bookings/${house.id}`} className="btn btn-hotel btn-sm">
+                        <Link to={`book-house/${house.id}`} className="btn btn-hotel btn-sm">
                             Book Now
                         </Link>
                     </div>

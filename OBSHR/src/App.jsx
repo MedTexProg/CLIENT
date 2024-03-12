@@ -12,6 +12,7 @@ import NavBar from "./components/layout/NavBar.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import HouseListing from "./components/house/HouseListing.jsx";
 import Admin from "./components/admin/Admin.jsx";
+import Checkout from "./components/bookings/Checkout.jsx";
 
 function App() {
     return <>
@@ -23,9 +24,9 @@ function App() {
                     <Route path="/edit-house/:houseId" element={<EditHouse/>}/>
                     <Route path="/existing-houses" element={<ExistingHouses/>}/>
                     <Route path="/add-house" element={<AddHouse/>}/>
+                    <Route path="/book-house/:houseId" element={<Checkout/>}/>
                     <Route path="/browse-all-houses" element={<HouseListing/>}/>
                     <Route path="/admin" element={<Admin/>}/>
-
 
                 </Routes>
                 <Footer/>
